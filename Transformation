@@ -71,18 +71,6 @@ void drawCoordinates() {
     glFlush();
 }
 
-// Translation
-void translate2d() {
-    double tx = 200, ty = 50;
-    double transMat[3][3] = {
-        {1, 0, tx},
-        {0, 1, ty},
-        {0, 0, 1}
-    };
-
-    multiplyMatrix(transMat);
-    polygon();
-}
 
 // Scaling
 void scaling2d() {
@@ -97,19 +85,7 @@ void scaling2d() {
     polygon();
 }
 
-// Rotation about origin
-void rotation() {
-    double angle = 180.0;
-    double rad = degreeToRad(angle);
-    double rotMat[3][3] = {
-        {cos(rad), -sin(rad), 0},
-        {sin(rad),  cos(rad), 0},
-        {0, 0, 1}
-    };
 
-    multiplyMatrix(rotMat);
-    polygon();
-}
 
 // Rotation about an arbitrary point
 void rotationArbitraryPoint() {
@@ -144,6 +120,30 @@ void rotationArbitraryPoint() {
     polygon();
 }
 
+void reflectX() {
+    double reflectMat[3][3] = {
+        {1,  0, 0},
+        {0, -1, 0},
+        {0,  0, 1}
+    };
+
+    multiplyMatrix(reflectMat);
+    polygon();
+}
+
+
+void reflectY() {
+    double reflectMat[3][3] = {
+        {-1, 0, 0},
+        { 0, 1, 0},
+        { 0, 0, 1}
+    };
+
+    multiplyMatrix(reflectMat);
+    polygon();
+}
+
+
 void menu(int ch) {
     drawCoordinates();
 
@@ -152,19 +152,20 @@ void menu(int ch) {
         polygon();
         break;
     case 2:
-        translate2d();
-        break;
-    case 3:
         scaling2d();
         break;
+    case 3:
+        rotationArbitraryPoint();
+        break;
     case 4:
-        rotation();
+        reflectX();
         break;
     case 5:
-        rotationArbitraryPoint();
+        reflectY();
         break;
     }
 }
+
 
 int main(int argc, char **argv) {
     glutInit(&argc, argv);
@@ -177,10 +178,10 @@ int main(int argc, char **argv) {
 
     glutCreateMenu(menu);
     glutAddMenuEntry("1 Display Polygon", 1);
-    glutAddMenuEntry("2 Translate", 2);
-    glutAddMenuEntry("3 Scaling", 3);
-    glutAddMenuEntry("4 Rotation", 4);
-    glutAddMenuEntry("5 Rotation About Arbitrary Point", 5);
+    glutAddMenuEntry("2 Scaling", 2);
+    glutAddMenuEntry("3 Rotation about arbitrary point", 3);
+    glutAddMenuEntry("4 reflectX", 4);
+    glutAddMenuEntry("5 reflectY", 5);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 
     glutMainLoop();
